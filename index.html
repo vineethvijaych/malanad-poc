@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excise Stock Register - Malabar Tourist Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f9fa;
+      }
+      .print-only {
+        display: none;
+      }
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+        .print-only {
+          display: block;
+        }
+        body {
+          background-color: white;
+        }
+        .print-container {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
+      <!-- Header -->
+      <header class="bg-blue-800 text-white shadow-lg no-print">
+        <div class="container mx-auto px-4 py-4">
+          <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Malabar Tourist Home</h1>
+            <h2 class="text-xl">Excise Stock Register</h2>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <div class="container mx-auto px-4 py-6">
+        <!-- Navigation Tabs -->
+        <div class="mb-6 no-print">
+          <div class="flex flex-wrap border-b border-gray-200">
+            <button
+              id="tab-stock"
+              class="px-6 py-3 bg-blue-600 text-white rounded-t-lg mr-2 focus:outline-none"
+            >
+              Stock Items
+            </button>
+            <button
+              id="tab-purchase"
+              class="px-6 py-3 bg-blue-400 text-white rounded-t-lg mr-2 focus:outline-none"
+            >
+              Add Purchase
+            </button>
+            <button
+              id="tab-sales"
+              class="px-6 py-3 bg-blue-400 text-white rounded-t-lg mr-2 focus:outline-none"
+            >
+              Enter Sales
+            </button>
+            <button
+              id="tab-report"
+              class="px-6 py-3 bg-blue-400 text-white rounded-t-lg focus:outline-none"
+            >
+              Reports
+            </button>
+          </div>
+        </div>
+
+        <!-- Stock Items Section -->
+        <div id="section-stock" class="bg-white p-6 rounded-lg shadow-md mb-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-semibold text-gray-800">
+              Stock Items Management
+            </h3>
+            <button
+              id="add-stock-btn"
+              class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+            >
+              + Add New Item
+            </button>
+          </div>
+
+          <!-- Stock Items Table -->
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="py-3 px-4 border-b text-left">Item Code</th>
+                  <th class="py-3 px-4 border-b text-left">Item Name</th>
+                  <th class="py-3 px-4 border-b text-left">Category</th>
+                  <th class="py-3 px-4 border-b text-left">Current Stock</th>
+                  <th class="py-3 px-4 border-b text-left">Unit</th>
+                  <th class="py-3 px-4 border-b text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="stock-items-body">
+                <!-- Stock items will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add Purchase Section -->
+        <div
+          id="section-purchase"
+          class="bg-white p-6 rounded-lg shadow-md mb-6 hidden"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-6">Add Purchase</h3>
+
+          <form id="purchase-form" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-gray-700 mb-2">Purchase Date</label>
+                <input
+                  type="date"
+                  id="purchase-date"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 mb-2">Invoice Number</label>
+                <input
+                  type="text"
+                  id="invoice-number"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-gray-700 mb-2">Select Item</label>
+              <select
+                id="purchase-item"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">-- Select Item --</option>
+                <!-- Items will be populated here -->
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-gray-700 mb-2">Quantity</label>
+                <input
+                  type="number"
+                  id="purchase-quantity"
+                  min="0"
+                  step="0.01"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 mb-2">Unit Price</label>
+                <input
+                  type="number"
+                  id="purchase-price"
+                  min="0"
+                  step="0.01"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 mb-2">Total Amount</label>
+                <input
+                  type="number"
+                  id="purchase-total"
+                  min="0"
+                  step="0.01"
+                  class="w-full px-4 py-2 border rounded-md bg-gray-100"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-gray-700 mb-2">Supplier Details</label>
+              <input
+                type="text"
+                id="supplier-details"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-gray-700 mb-2">Notes</label>
+              <textarea
+                id="purchase-notes"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="2"
+              ></textarea>
+            </div>
+
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+              >
+                Save Purchase
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Enter Sales Section -->
+        <div
+          id="section-sales"
+          class="bg-white p-6 rounded-lg shadow-md mb-6 hidden"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-6">Enter Sales</h3>
+
+          <form id="sales-form" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-gray-700 mb-2">Sales Date</label>
+                <input
+                  type="date"
+                  id="sales-date"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 mb-2">Select Item</label>
+                <select
+                  id="sales-item"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">-- Select Item --</option>
+                  <!-- Items will be populated here -->
+                </select>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium text-gray-700 mb-3">Sales Quantities</h4>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <label class="block text-gray-700 mb-2">AC</label>
+                  <input
+                    type="number"
+                    id="sales-ac"
+                    min="0"
+                    step="0.01"
+                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="0"
+                  />
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Non-AC</label>
+                  <input
+                    type="number"
+                    id="sales-nonac"
+                    min="0"
+                    step="0.01"
+                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="0"
+                  />
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Local</label>
+                  <input
+                    type="number"
+                    id="sales-local"
+                    min="0"
+                    step="0.01"
+                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="0"
+                  />
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Peg</label>
+                  <input
+                    type="number"
+                    id="sales-peg"
+                    min="0"
+                    step="0.01"
+                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="0"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-gray-700 mb-2">Total Quantity</label>
+                <input
+                  type="number"
+                  id="sales-total-qty"
+                  min="0"
+                  step="0.01"
+                  class="w-full px-4 py-2 border rounded-md bg-gray-100"
+                  readonly
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 mb-2">Notes</label>
+                <input
+                  type="text"
+                  id="sales-notes"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+              >
+                Save Sales
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Reports Section -->
+        <div
+          id="section-report"
+          class="bg-white p-6 rounded-lg shadow-md mb-6 hidden"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-6">
+            Stock Register Reports
+          </h3>
+
+          <form id="report-form" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-gray-700 mb-2">Select Item</label>
+                <select
+                  id="report-item"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">All Items</option>
+                  <!-- Items will be populated here -->
+                </select>
+              </div>
+              <div>
+                <label class="block text-gray-700 mb-2">From Date</label>
+                <input
+                  type="date"
+                  id="report-from-date"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 mb-2">To Date</label>
+                <input
+                  type="date"
+                  id="report-to-date"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+              >
+                Generate Report
+              </button>
+            </div>
+          </form>
+
+          <div id="report-result" class="mt-6 hidden">
+            <div class="flex justify-between items-center mb-4">
+              <h4 class="text-lg font-medium text-gray-800">Report Results</h4>
+              <button
+                id="print-report"
+                class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition"
+              >
+                Print Report
+              </button>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th class="py-3 px-4 border-b text-left">Date</th>
+                    <th class="py-3 px-4 border-b text-left">Item</th>
+                    <th class="py-3 px-4 border-b text-left">Transaction</th>
+                    <th class="py-3 px-4 border-b text-left">Opening</th>
+                    <th class="py-3 px-4 border-b text-left">In</th>
+                    <th class="py-3 px-4 border-b text-left">Out</th>
+                    <th class="py-3 px-4 border-b text-left">Closing</th>
+                    <th class="py-3 px-4 border-b text-left">Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="report-table-body">
+                  <!-- Report data will be populated here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print Template -->
+        <div id="print-template" class="print-only">
+          <div class="print-container">
+            <div class="text-center mb-6">
+              <h1 class="text-2xl font-bold">Malabar Tourist Home</h1>
+              <h2 class="text-xl">Excise Stock Register</h2>
+              <p id="print-date-range" class="mt-2"></p>
+            </div>
+
+            <table class="min-w-full bg-white border border-gray-200">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="py-3 px-4 border-b text-left">Date</th>
+                  <th class="py-3 px-4 border-b text-left">Item</th>
+                  <th class="py-3 px-4 border-b text-left">Transaction</th>
+                  <th class="py-3 px-4 border-b text-left">Opening</th>
+                  <th class="py-3 px-4 border-b text-left">In</th>
+                  <th class="py-3 px-4 border-b text-left">Out</th>
+                  <th class="py-3 px-4 border-b text-left">Closing</th>
+                  <th class="py-3 px-4 border-b text-left">Notes</th>
+                </tr>
+              </thead>
+              <tbody id="print-table-body">
+                <!-- Print data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Stock Item Modal -->
+    <div
+      id="add-stock-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">
+            Add New Stock Item
+          </h3>
+          <button
+            id="close-add-stock"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form id="add-stock-form" class="space-y-4">
+          <div>
+            <label class="block text-gray-700 mb-2">Item Code</label>
+            <input
+              type="text"
+              id="item-code"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Item Name</label>
+            <input
+              type="text"
+              id="item-name"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Category</label>
+            <select
+              id="item-category"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">-- Select Category --</option>
+              <option value="Beer">Beer</option>
+              <option value="Wine">Wine</option>
+              <option value="Spirits">Spirits</option>
+              <option value="Whisky">Whisky</option>
+              <option value="Rum">Rum</option>
+              <option value="Vodka">Vodka</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Initial Stock</label>
+            <input
+              type="number"
+              id="item-stock"
+              min="0"
+              step="0.01"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Unit</label>
+            <select
+              id="item-unit"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="Bottle">Bottle</option>
+              <option value="Case">Case</option>
+              <option value="Liter">Liter</option>
+              <option value="ML">ML</option>
+            </select>
+          </div>
+
+          <div class="flex justify-end">
+            <button
+              type="button"
+              id="cancel-add-stock"
+              class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              Save Item
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Stock Item Modal -->
+    <div
+      id="edit-stock-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">Edit Stock Item</h3>
+          <button
+            id="close-edit-stock"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form id="edit-stock-form" class="space-y-4">
+          <input type="hidden" id="edit-item-id" />
+
+          <div>
+            <label class="block text-gray-700 mb-2">Item Code</label>
+            <input
+              type="text"
+              id="edit-item-code"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Item Name</label>
+            <input
+              type="text"
+              id="edit-item-name"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Category</label>
+            <select
+              id="edit-item-category"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">-- Select Category --</option>
+              <option value="Beer">Beer</option>
+              <option value="Wine">Wine</option>
+              <option value="Spirits">Spirits</option>
+              <option value="Whisky">Whisky</option>
+              <option value="Rum">Rum</option>
+              <option value="Vodka">Vodka</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Current Stock</label>
+            <input
+              type="number"
+              id="edit-item-stock"
+              min="0"
+              step="0.01"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Unit</label>
+            <select
+              id="edit-item-unit"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="Bottle">Bottle</option>
+              <option value="Case">Case</option>
+              <option value="Liter">Liter</option>
+              <option value="ML">ML</option>
+            </select>
+          </div>
+
+          <div class="flex justify-end">
+            <button
+              type="button"
+              id="cancel-edit-stock"
+              class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              Update Item
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Negative Stock Modal -->
+    <div
+      id="negative-stock-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">
+            Negative Stock Adjustment
+          </h3>
+          <button
+            id="close-negative-stock"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form id="negative-stock-form" class="space-y-4">
+          <input type="hidden" id="neg-item-id" />
+
+          <div>
+            <label class="block text-gray-700 mb-2">Item</label>
+            <input
+              type="text"
+              id="neg-item-name"
+              class="w-full px-4 py-2 border rounded-md bg-gray-100"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Current Stock</label>
+            <input
+              type="number"
+              id="neg-current-stock"
+              class="w-full px-4 py-2 border rounded-md bg-gray-100"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Adjustment Date</label>
+            <input
+              type="date"
+              id="neg-date"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2"
+              >Adjustment Quantity (Negative)</label
+            >
+            <input
+              type="number"
+              id="neg-quantity"
+              min="0.01"
+              step="0.01"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Reason</label>
+            <select
+              id="neg-reason"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">-- Select Reason --</option>
+              <option value="Breakage">Breakage</option>
+              <option value="Wastage">Wastage</option>
+              <option value="Expired">Expired</option>
+              <option value="Stock Count Adjustment">
+                Stock Count Adjustment
+              </option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 mb-2">Notes</label>
+            <textarea
+              id="neg-notes"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="2"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button
+              type="button"
+              id="cancel-negative-stock"
+              class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+            >
+              Apply Adjustment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Initialize data storage
+      let stockItems = JSON.parse(localStorage.getItem("stockItems")) || [];
+      let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+      let currentItemId = parseInt(localStorage.getItem("currentItemId")) || 1;
+
+      // Set today's date as default for date inputs
+      document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("purchase-date").value = today;
+        document.getElementById("sales-date").value = today;
+        document.getElementById("neg-date").value = today;
+
+        // Set default report dates (last 30 days)
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        document.getElementById("report-from-date").value = thirtyDaysAgo
+          .toISOString()
+          .split("T")[0];
+        document.getElementById("report-to-date").value = today;
+
+        // Load initial data
+        loadStockItems();
+        populateItemDropdowns();
+      });
+
+      // Tab navigation
+      document
+        .getElementById("tab-stock")
+        .addEventListener("click", function () {
+          showSection("stock");
+        });
+
+      document
+        .getElementById("tab-purchase")
+        .addEventListener("click", function () {
+          showSection("purchase");
+        });
+
+      document
+        .getElementById("tab-sales")
+        .addEventListener("click", function () {
+          showSection("sales");
+        });
+
+      document
+        .getElementById("tab-report")
+        .addEventListener("click", function () {
+          showSection("report");
+        });
+
+      function showSection(section) {
+        // Hide all sections
+        document.getElementById("section-stock").classList.add("hidden");
+        document.getElementById("section-purchase").classList.add("hidden");
+        document.getElementById("section-sales").classList.add("hidden");
+        document.getElementById("section-report").classList.add("hidden");
+
+        // Reset tab styles
+        document.getElementById("tab-stock").classList.remove("bg-blue-600");
+        document.getElementById("tab-stock").classList.add("bg-blue-400");
+        document.getElementById("tab-purchase").classList.remove("bg-blue-600");
+        document.getElementById("tab-purchase").classList.add("bg-blue-400");
+        document.getElementById("tab-sales").classList.remove("bg-blue-600");
+        document.getElementById("tab-sales").classList.add("bg-blue-400");
+        document.getElementById("tab-report").classList.remove("bg-blue-600");
+        document.getElementById("tab-report").classList.add("bg-blue-400");
+
+        // Show selected section and highlight tab
+        document
+          .getElementById("section-" + section)
+          .classList.remove("hidden");
+        document
+          .getElementById("tab-" + section)
+          .classList.remove("bg-blue-400");
+        document.getElementById("tab-" + section).classList.add("bg-blue-600");
+      }
+
+      // Stock Items Management
+      function loadStockItems() {
+        const tableBody = document.getElementById("stock-items-body");
+        tableBody.innerHTML = "";
+
+        if (stockItems.length === 0) {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td colspan="6" class="py-4 px-4 text-center text-gray-500">No stock items found. Add your first item.</td>
+                `;
+          tableBody.appendChild(row);
+          return;
+        }
+
+        stockItems.forEach((item) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td class="py-3 px-4 border-b">${item.code}</td>
+                    <td class="py-3 px-4 border-b">${item.name}</td>
+                    <td class="py-3 px-4 border-b">${item.category}</td>
+                    <td class="py-3 px-4 border-b">${item.stock} ${item.unit}</td>
+                    <td class="py-3 px-4 border-b">${item.unit}</td>
+                    <td class="py-3 px-4 border-b">
+                        <button class="edit-item text-blue-600 hover:text-blue-800 mr-2" data-id="${item.id}">Edit</button>
+                        <button class="neg-stock text-red-600 hover:text-red-800" data-id="${item.id}">-ve Stock</button>
+                    </td>
+                `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to buttons
+        document.querySelectorAll(".edit-item").forEach((button) => {
+          button.addEventListener("click", function () {
+            const itemId = parseInt(this.getAttribute("data-id"));
+            openEditStockModal(itemId);
+          });
+        });
+
+        document.querySelectorAll(".neg-stock").forEach((button) => {
+          button.addEventListener("click", function () {
+            const itemId = parseInt(this.getAttribute("data-id"));
+            openNegativeStockModal(itemId);
+          });
+        });
+      }
+
+      function populateItemDropdowns() {
+        const purchaseSelect = document.getElementById("purchase-item");
+        const salesSelect = document.getElementById("sales-item");
+        const reportSelect = document.getElementById("report-item");
+
+        // Clear existing options except the first one
+        purchaseSelect.innerHTML =
+          '<option value="">-- Select Item --</option>';
+        salesSelect.innerHTML = '<option value="">-- Select Item --</option>';
+        reportSelect.innerHTML = '<option value="all">All Items</option>';
+
+        // Add stock items to dropdowns
+        stockItems.forEach((item) => {
+          const purchaseOption = document.createElement("option");
+          purchaseOption.value = item.id;
+          purchaseOption.textContent = `${item.name} (${item.code})`;
+          purchaseSelect.appendChild(purchaseOption);
+
+          const salesOption = document.createElement("option");
+          salesOption.value = item.id;
+          salesOption.textContent = `${item.name} (${item.code})`;
+          salesSelect.appendChild(salesOption);
+
+          const reportOption = document.createElement("option");
+          reportOption.value = item.id;
+          reportOption.textContent = `${item.name} (${item.code})`;
+          reportSelect.appendChild(reportOption);
+        });
+      }
+
+      // Add Stock Item Modal
+      document
+        .getElementById("add-stock-btn")
+        .addEventListener("click", function () {
+          document.getElementById("add-stock-modal").classList.remove("hidden");
+        });
+
+      document
+        .getElementById("close-add-stock")
+        .addEventListener("click", function () {
+          document.getElementById("add-stock-modal").classList.add("hidden");
+        });
+
+      document
+        .getElementById("cancel-add-stock")
+        .addEventListener("click", function () {
+          document.getElementById("add-stock-modal").classList.add("hidden");
+        });
+
+      document
+        .getElementById("add-stock-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const newItem = {
+            id: currentItemId++,
+            code: document.getElementById("item-code").value,
+            name: document.getElementById("item-name").value,
+            category: document.getElementById("item-category").value,
+            stock: parseFloat(document.getElementById("item-stock").value),
+            unit: document.getElementById("item-unit").value,
+          };
+
+          stockItems.push(newItem);
+
+          // Add initial stock transaction
+          if (newItem.stock > 0) {
+            const today = new Date().toISOString().split("T")[0];
+            transactions.push({
+              date: today,
+              itemId: newItem.id,
+              type: "initial",
+              quantity: newItem.stock,
+              notes: "Initial stock entry",
+            });
+          }
+
+          // Save to localStorage
+          localStorage.setItem("stockItems", JSON.stringify(stockItems));
+          localStorage.setItem("transactions", JSON.stringify(transactions));
+          localStorage.setItem("currentItemId", currentItemId.toString());
+
+          // Reload data and close modal
+          loadStockItems();
+          populateItemDropdowns();
+          document.getElementById("add-stock-form").reset();
+          document.getElementById("add-stock-modal").classList.add("hidden");
+        });
+
+      // Edit Stock Item Modal
+      function openEditStockModal(itemId) {
+        const item = stockItems.find((item) => item.id === itemId);
+        if (!item) return;
+
+        document.getElementById("edit-item-id").value = item.id;
+        document.getElementById("edit-item-code").value = item.code;
+        document.getElementById("edit-item-name").value = item.name;
+        document.getElementById("edit-item-category").value = item.category;
+        document.getElementById("edit-item-stock").value = item.stock;
+        document.getElementById("edit-item-unit").value = item.unit;
+
+        document.getElementById("edit-stock-modal").classList.remove("hidden");
+      }
+
+      document
+        .getElementById("close-edit-stock")
+        .addEventListener("click", function () {
+          document.getElementById("edit-stock-modal").classList.add("hidden");
+        });
+
+      document
+        .getElementById("cancel-edit-stock")
+        .addEventListener("click", function () {
+          document.getElementById("edit-stock-modal").classList.add("hidden");
+        });
+
+      document
+        .getElementById("edit-stock-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const itemId = parseInt(
+            document.getElementById("edit-item-id").value
+          );
+          const itemIndex = stockItems.findIndex((item) => item.id === itemId);
+
+          if (itemIndex !== -1) {
+            const oldStock = stockItems[itemIndex].stock;
+            const newStock = parseFloat(
+              document.getElementById("edit-item-stock").value
+            );
+
+            stockItems[itemIndex] = {
+              id: itemId,
+              code: document.getElementById("edit-item-code").value,
+              name: document.getElementById("edit-item-name").value,
+              category: document.getElementById("edit-item-category").value,
+              stock: newStock,
+              unit: document.getElementById("edit-item-unit").value,
+            };
+
+            // Add adjustment transaction if stock was changed
+            if (oldStock !== newStock) {
+              const today = new Date().toISOString().split("T")[0];
+              transactions.push({
+                date: today,
+                itemId: itemId,
+                type: "adjustment",
+                quantity: newStock - oldStock,
+                notes: "Stock adjustment via edit",
+              });
+            }
+
+            // Save to localStorage
+            localStorage.setItem("stockItems", JSON.stringify(stockItems));
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+
+            // Reload data and close modal
+            loadStockItems();
+            populateItemDropdowns();
+            document.getElementById("edit-stock-modal").classList.add("hidden");
+          }
+        });
+
+      // Negative Stock Modal
+      function openNegativeStockModal(itemId) {
+        const item = stockItems.find((item) => item.id === itemId);
+        if (!item) return;
+
+        document.getElementById("neg-item-id").value = item.id;
+        document.getElementById(
+          "neg-item-name"
+        ).value = `${item.name} (${item.code})`;
+        document.getElementById(
+          "neg-current-stock"
+        ).value = `${item.stock} ${item.unit}`;
+
+        document
+          .getElementById("negative-stock-modal")
+          .classList.remove("hidden");
+      }
+
+      document
+        .getElementById("close-negative-stock")
+        .addEventListener("click", function () {
+          document
+            .getElementById("negative-stock-modal")
+            .classList.add("hidden");
+        });
+
+      document
+        .getElementById("cancel-negative-stock")
+        .addEventListener("click", function () {
+          document
+            .getElementById("negative-stock-modal")
+            .classList.add("hidden");
+        });
+
+      document
+        .getElementById("negative-stock-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const itemId = parseInt(document.getElementById("neg-item-id").value);
+          const itemIndex = stockItems.findIndex((item) => item.id === itemId);
+
+          if (itemIndex !== -1) {
+            const adjustmentQty = parseFloat(
+              document.getElementById("neg-quantity").value
+            );
+            const reason = document.getElementById("neg-reason").value;
+            const notes = document.getElementById("neg-notes").value;
+            const date = document.getElementById("neg-date").value;
+
+            // Update stock
+            stockItems[itemIndex].stock -= adjustmentQty;
+
+            // Add transaction
+            transactions.push({
+              date: date,
+              itemId: itemId,
+              type: "negative",
+              quantity: -adjustmentQty,
+              reason: reason,
+              notes: notes || `Negative adjustment: ${reason}`,
+            });
+
+            // Save to localStorage
+            localStorage.setItem("stockItems", JSON.stringify(stockItems));
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+
+            // Reload data and close modal
+            loadStockItems();
+            document.getElementById("negative-stock-form").reset();
+            document
+              .getElementById("negative-stock-modal")
+              .classList.add("hidden");
+          }
+        });
+
+      // Purchase Form
+      document
+        .getElementById("purchase-quantity")
+        .addEventListener("input", calculatePurchaseTotal);
+      document
+        .getElementById("purchase-price")
+        .addEventListener("input", calculatePurchaseTotal);
+
+      function calculatePurchaseTotal() {
+        const quantity =
+          parseFloat(document.getElementById("purchase-quantity").value) || 0;
+        const price =
+          parseFloat(document.getElementById("purchase-price").value) || 0;
+        document.getElementById("purchase-total").value = (
+          quantity * price
+        ).toFixed(2);
+      }
+
+      document
+        .getElementById("purchase-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const itemId = parseInt(
+            document.getElementById("purchase-item").value
+          );
+          const quantity = parseFloat(
+            document.getElementById("purchase-quantity").value
+          );
+          const price = parseFloat(
+            document.getElementById("purchase-price").value
+          );
+          const date = document.getElementById("purchase-date").value;
+          const invoice = document.getElementById("invoice-number").value;
+          const supplier = document.getElementById("supplier-details").value;
+          const notes = document.getElementById("purchase-notes").value;
+
+          // Update stock
+          const itemIndex = stockItems.findIndex((item) => item.id === itemId);
+          if (itemIndex !== -1) {
+            stockItems[itemIndex].stock += quantity;
+
+            // Add transaction
+            transactions.push({
+              date: date,
+              itemId: itemId,
+              type: "purchase",
+              quantity: quantity,
+              price: price,
+              total: quantity * price,
+              invoice: invoice,
+              supplier: supplier,
+              notes: notes || "Purchase",
+            });
+
+            // Save to localStorage
+            localStorage.setItem("stockItems", JSON.stringify(stockItems));
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+
+            // Reset form and show success message
+            document.getElementById("purchase-form").reset();
+            alert("Purchase added successfully!");
+
+            // Set today's date again
+            document.getElementById("purchase-date").value = new Date()
+              .toISOString()
+              .split("T")[0];
+          }
+        });
+
+      // Sales Form
+      document
+        .getElementById("sales-ac")
+        .addEventListener("input", calculateSalesTotal);
+      document
+        .getElementById("sales-nonac")
+        .addEventListener("input", calculateSalesTotal);
+      document
+        .getElementById("sales-local")
+        .addEventListener("input", calculateSalesTotal);
+      document
+        .getElementById("sales-peg")
+        .addEventListener("input", calculateSalesTotal);
+
+      function calculateSalesTotal() {
+        const ac = parseFloat(document.getElementById("sales-ac").value) || 0;
+        const nonac =
+          parseFloat(document.getElementById("sales-nonac").value) || 0;
+        const local =
+          parseFloat(document.getElementById("sales-local").value) || 0;
+        const peg = parseFloat(document.getElementById("sales-peg").value) || 0;
+
+        const total = ac + nonac + local + peg;
+        document.getElementById("sales-total-qty").value = total.toFixed(2);
+      }
+
+      document
+        .getElementById("sales-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const itemId = parseInt(document.getElementById("sales-item").value);
+          const date = document.getElementById("sales-date").value;
+          const ac = parseFloat(document.getElementById("sales-ac").value) || 0;
+          const nonac =
+            parseFloat(document.getElementById("sales-nonac").value) || 0;
+          const local =
+            parseFloat(document.getElementById("sales-local").value) || 0;
+          const peg =
+            parseFloat(document.getElementById("sales-peg").value) || 0;
+          const total = ac + nonac + local + peg;
+          const notes = document.getElementById("sales-notes").value;
+
+          // Update stock
+          const itemIndex = stockItems.findIndex((item) => item.id === itemId);
+          if (itemIndex !== -1) {
+            if (total > stockItems[itemIndex].stock) {
+              alert("Error: Sales quantity exceeds available stock!");
+              return;
+            }
+
+            stockItems[itemIndex].stock -= total;
+
+            // Add transaction
+            transactions.push({
+              date: date,
+              itemId: itemId,
+              type: "sales",
+              quantity: -total,
+              ac: ac,
+              nonac: nonac,
+              local: local,
+              peg: peg,
+              notes: notes || "Sales",
+            });
+
+            // Save to localStorage
+            localStorage.setItem("stockItems", JSON.stringify(stockItems));
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+
+            // Reset form and show success message
+            document.getElementById("sales-form").reset();
+            document.getElementById("sales-ac").value = 0;
+            document.getElementById("sales-nonac").value = 0;
+            document.getElementById("sales-local").value = 0;
+            document.getElementById("sales-peg").value = 0;
+            document.getElementById("sales-total-qty").value = "";
+            alert("Sales recorded successfully!");
+
+            // Set today's date again
+            document.getElementById("sales-date").value = new Date()
+              .toISOString()
+              .split("T")[0];
+          }
+        });
+
+      // Report Generation
+      document
+        .getElementById("report-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const itemId = document.getElementById("report-item").value;
+          const fromDate = document.getElementById("report-from-date").value;
+          const toDate = document.getElementById("report-to-date").value;
+
+          generateReport(
+            itemId === "all" ? null : parseInt(itemId),
+            fromDate,
+            toDate
+          );
+        });
+
+      function generateReport(itemId, fromDate, toDate) {
+        // Filter transactions by date and item
+        let filteredTransactions = transactions.filter((t) => {
+          return (
+            t.date >= fromDate &&
+            t.date <= toDate &&
+            (itemId === null || t.itemId === itemId)
+          );
+        });
+
+        // Sort by date
+        filteredTransactions.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+
+        // Group by item and date for stock calculation
+        const reportData = [];
+        const itemStockMap = {};
+
+        // Initialize with opening balances
+        stockItems.forEach((item) => {
+          if (itemId === null || item.id === itemId) {
+            // Calculate opening balance
+            let openingBalance = 0;
+            const beforePeriodTransactions = transactions.filter((t) => {
+              return t.itemId === item.id && t.date < fromDate;
+            });
+
+            beforePeriodTransactions.forEach((t) => {
+              if (
+                t.type === "initial" ||
+                t.type === "purchase" ||
+                t.type === "adjustment"
+              ) {
+                openingBalance += t.quantity;
+              } else if (t.type === "sales" || t.type === "negative") {
+                openingBalance += t.quantity; // Already negative
+              }
+            });
+
+            itemStockMap[item.id] = openingBalance;
+
+            // Add opening balance row
+            reportData.push({
+              date: fromDate,
+              itemId: item.id,
+              itemName: item.name,
+              itemCode: item.code,
+              transaction: "Opening Balance",
+              opening: openingBalance,
+              in: 0,
+              out: 0,
+              closing: openingBalance,
+              notes: "Opening balance for period",
+            });
+          }
+        });
+
+        // Process transactions
+        filteredTransactions.forEach((t) => {
+          const item = stockItems.find((i) => i.id === t.itemId);
+          if (!item) return;
+
+          const opening = itemStockMap[t.itemId];
+          let inQty = 0;
+          let outQty = 0;
+
+          if (
+            t.type === "purchase" ||
+            (t.type === "adjustment" && t.quantity > 0)
+          ) {
+            inQty = t.quantity;
+          } else if (
+            t.type === "sales" ||
+            t.type === "negative" ||
+            (t.type === "adjustment" && t.quantity < 0)
+          ) {
+            outQty = Math.abs(t.quantity);
+          }
+
+          const closing = opening + inQty - outQty;
+          itemStockMap[t.itemId] = closing;
+
+          let transactionType =
+            t.type.charAt(0).toUpperCase() + t.type.slice(1);
+          if (t.type === "sales") {
+            const details = [];
+            if (t.ac) details.push(`AC: ${t.ac}`);
+            if (t.nonac) details.push(`Non-AC: ${t.nonac}`);
+            if (t.local) details.push(`Local: ${t.local}`);
+            if (t.peg) details.push(`Peg: ${t.peg}`);
+            transactionType += ` (${details.join(", ")})`;
+          }
+
+          reportData.push({
+            date: t.date,
+            itemId: t.itemId,
+            itemName: item.name,
+            itemCode: item.code,
+            transaction: transactionType,
+            opening: opening,
+            in: inQty,
+            out: outQty,
+            closing: closing,
+            notes: t.notes || "",
+          });
+        });
+
+        // Display report
+        displayReport(reportData, fromDate, toDate);
+      }
+
+      function displayReport(reportData, fromDate, toDate) {
+        const tableBody = document.getElementById("report-table-body");
+        tableBody.innerHTML = "";
+
+        if (reportData.length === 0) {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td colspan="8" class="py-4 px-4 text-center text-gray-500">No data found for the selected period.</td>
+                `;
+          tableBody.appendChild(row);
+        } else {
+          reportData.forEach((row) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                        <td class="py-2 px-4 border-b">${formatDate(
+                          row.date
+                        )}</td>
+                        <td class="py-2 px-4 border-b">${row.itemName} (${
+              row.itemCode
+            })</td>
+                        <td class="py-2 px-4 border-b">${row.transaction}</td>
+                        <td class="py-2 px-4 border-b text-right">${row.opening.toFixed(
+                          2
+                        )}</td>
+                        <td class="py-2 px-4 border-b text-right">${row.in.toFixed(
+                          2
+                        )}</td>
+                        <td class="py-2 px-4 border-b text-right">${row.out.toFixed(
+                          2
+                        )}</td>
+                        <td class="py-2 px-4 border-b text-right">${row.closing.toFixed(
+                          2
+                        )}</td>
+                        <td class="py-2 px-4 border-b">${row.notes}</td>
+                    `;
+            tableBody.appendChild(tr);
+          });
+        }
+
+        // Show report section
+        document.getElementById("report-result").classList.remove("hidden");
+
+        // Update print template
+        document.getElementById(
+          "print-date-range"
+        ).textContent = `Period: ${formatDate(fromDate)} to ${formatDate(
+          toDate
+        )}`;
+        const printTableBody = document.getElementById("print-table-body");
+        printTableBody.innerHTML = tableBody.innerHTML;
+      }
+
+      // Print report
+      document
+        .getElementById("print-report")
+        .addEventListener("click", function () {
+          window.print();
+        });
+
+      // Helper function to format date
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'94449de110571191',t:'MTc0ODAwMzk3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
